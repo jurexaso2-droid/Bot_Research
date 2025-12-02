@@ -206,7 +206,7 @@ function addMessage(content, isUser = false) {
             </div>
             <div class="message-content-wrapper">
                 <div class="message-header">
-                    <span class="sender-name">EduBot AI</span>
+                    <span class="sender-name">REXB0T AI</span>
                     <span class="message-time">${time}</span>
                 </div>
                 <div class="message-bubble bot-bubble">
