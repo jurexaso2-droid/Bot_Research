@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REXB0T - AI Educational Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.3s;
+        }
+        
+        :root {
+            /* Light Theme Variables */
+            --primary-color: #007AFF;
+            --primary-light: #E6F2FF;
+            --secondary-color: #5856D6;
+            --accent-color: #00C7BE;
+            --bot-color: #F2F2F7;
+            --user-color: #007AFF;
+            --text-dark: #1C1C1E;
+            --text-light: #8E8E93;
+            --bg-color: #FFFFFF;
+            --sidebar-bg: #F2F2F7;
+            --chat-bg: #FFFFFF;
+            --message-bg: #F2F2F7;
+            --input-bg: #F2F2F7;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.04);
+            --border-radius: 18px;
+            --border-radius-sm: 12px;
+            --border-color: #E5E5EA;
+            --header-gradient: linear-gradient(135deg, #007AFF 0%, #00C7BE 100%);
+            --success-color: #34C759;
+            --warning-color: #FF9500;
+            --error-color: #FF3B30;
+        }
+        
+        /* Dark Theme Variables */
+        .dark-theme {
+            --primary-color: #0A84FF;
+            --primary-light: #1C1C1E;
+            --secondary-color: #5E5CE6;
+            --accent-color: #64D2FF;
+            --bot-color: #2C2C2E;
+            --user-color: #0A84FF;
+            --text-dark: #FFFFFF;
+            --text-light: #98989D;
+            --bg-color: #000000;
+            --sidebar-bg: #1C1C1E;
+            --chat-bg: #000000;
+            --message-bg: #2C2C2E;
+            --input-bg: #2C2C2E;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.2);
+            --border-radius: 18px;
+            --border-radius-sm: 12px;
+            --border-color: #38383A;
+            --header-gradient: linear-gradient(135deg, #0A84FF 0%, #5E5CE6 100%);
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Modern Header */
+        .chat-header {
+            padding: 0 20px;
+            background: var(--chat-bg);
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            z-index: 100;
+            position: relative;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .hamburger-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            width: 44px;
+            height: 44px;
+        }
+        
+        .hamburger-btn:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .bot-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .bot-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--header-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            position: relative;
+        }
+        
+        .bot-status {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background-color: var(--success-color);
+            border-radius: 50%;
+            border: 2px solid var(--chat-bg);
+        }
+        
+        .bot-details h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        
+        .bot-details p {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            width: 44px;
+            height: 44px;
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+        
+        .header-action {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            width: 44px;
+            height: 44px;
+        }
+        
+        .header-action:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+        
+        /* Sidebar - Modern Design */
+        .sidebar {
+            position: fixed;
+            left: -320px;
+            top: 0;
+            width: 320px;
+            height: 100%;
+            background-color: var(--sidebar-bg);
+            z-index: 1000;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar.active {
+            left: 0;
+        }
+        
+        .sidebar-header {
+            padding: 30px 25px 20px;
+            background: var(--header-gradient);
+            color: white;
+        }
+        
+        .sidebar-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .sidebar-content {
+            padding: 20px 25px;
+            flex: 1;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        
+        .sidebar-item:hover {
+            background-color: var(--primary-light);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .sidebar-item i {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-right: 15px;
+            width: 24px;
+        }
+        
+        .sidebar-item span {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            backdrop-filter: blur(3px);
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Main Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: var(--chat-bg);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Messages Area */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color);
+            position: relative;
+        }
+        
+        .message {
+            max-width: 75%;
+            margin-bottom: 16px;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+            line-height: 1.5;
+            word-wrap: break-word;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            align-self: flex-start;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+        }
+        
+        .message-content {
+            padding: 14px 18px;
+            border-radius: var(--border-radius);
+            position: relative;
+            box-shadow: var(--shadow-light);
+            max-width: 100%;
+        }
+        
+        .bot-message .message-content {
+            background-color: var(--message-bg);
+            color: var(--text-dark);
+            border-top-left-radius: 5px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .user-message .message-content {
+            background-color: var(--user-color);
+            color: white;
+            border-top-right-radius: 5px;
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 6px;
+            display: block;
+        }
+        
+        .user-message .message-time {
+            text-align: right;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: var(--bg-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .welcome-message h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .welcome-message p {
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .quick-question {
+            padding: 10px 16px;
+            background-color: var(--primary-light);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .quick-question:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        /* Input Area */
+        .input-container {
+            padding: 20px;
+            background-color: var(--chat-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .message-input {
+            flex: 1;
+            padding: 16px 24px;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+            background-color: var(--input-bg);
+            color: var(--text-dark);
+            resize: none;
+            height: 52px;
+            max-height: 120px;
+            line-height: 1.5;
+        }
+        
+        .message-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+        
+        .send-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+        
+        .send-btn:hover {
+            background-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        .send-btn:disabled {
+            background-color: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background-color: var(--message-bg);
+            border-radius: var(--border-radius);
+            width: fit-content;
+            margin-bottom: 16px;
+            align-self: flex-start;
+            border: 1px solid var(--border-color);
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--text-light);
+            margin: 0 4px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typingAnimation {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+        }
+        
+        .typing-text {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-right: 12px;
+        }
+        
+        /* Educational Features */
+        .educational-tips {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+        }
+        
+        .educational-tips h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .educational-tips p {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        /* Message Reactions */
+        .message-reactions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .reaction-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 4px 10px;
+            font-size: 12px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .reaction-btn:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+            
+            .chat-header {
+                padding: 0 15px;
+                height: 60px;
+            }
+            
+            .hamburger-btn, .theme-toggle, .header-action {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .bot-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            
+            .bot-details h2 {
+                font-size: 16px;
+            }
+            
+            .bot-details p {
+                font-size: 12px;
+            }
+            
+            .message {
+                max-width: 90%;
+            }
+            
+            .welcome-message {
+                padding: 20px;
+                margin: 20px 15px;
+            }
+            
+            .welcome-message h3 {
+                font-size: 20px;
+            }
+            
+            .input-container {
+                padding: 15px;
+            }
+            
+            .message-input {
+                padding: 14px 20px;
+                height: 48px;
+            }
+            
+            .send-btn {
+                width: 48px;
+                height: 48px;
+            }
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-light);
+            border-radius: 3px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .sidebar.active .sidebar-item {
+            animation: slideIn 0.3s ease forwards;
+        }
+        
+        .sidebar-item:nth-child(1) { animation-delay: 0.1s; }
+        .sidebar-item:nth-child(2) { animation-delay: 0.15s; }
+        .sidebar-item:nth-child(3) { animation-delay: 0.2s; }
+        .sidebar-item:nth-child(4) { animation-delay: 0.25s; }
+        .sidebar-item:nth-child(5) { animation-delay: 0.3s; }
+        .sidebar-item:nth-child(6) { animation-delay: 0.35s; }
+        
+        /* Loading dots for thinking */
+        .thinking-dots {
+            display: inline-block;
+        }
+        
+        .thinking-dots span {
+            animation: blink 1.4s infinite both;
+            display: inline-block;
+        }
+        
+        .thinking-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .thinking-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes blink {
+            0%, 80%, 100% { opacity: 0.2; }
+            40% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Chat Container -->
+    <main class="chat-container">
+        <!-- Modern Chat Header -->
+        <header class="chat-header">
+            <div class="header-left">
+                <button class="hamburger-btn" id="hamburgerBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <div class="bot-info">
+                    <div class="bot-avatar">
+                        R
+                        <div class="bot-status"></div>
+                    </div>
+                    <div class="bot-details">
+                        <h2>REXB0T</h2>
+                        <p>AI Educational Assistant</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="header-action" id="infoBtn">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Messages Container -->
+        <div class="messages-container" id="messagesContainer">
+            <!-- Welcome message -->
+            <div class="welcome-message">
+                <h3>Welcome to REXB0T! 👋</h3>
+                <p>I'm your AI educational assistant powered by Google's Gemini API.</p>
+                <p>Ask me anything about science, math, history, language learning, or any other educational topic.</p>
+                
+                <div class="quick-questions">
+                    <div class="quick-question" data-question="Explain photosynthesis">Photosynthesis</div>
+                    <div class="quick-question" data-question="What is the Pythagorean theorem?">Pythagorean Theorem</div>
+                    <div class="quick-question" data-question="Explain World War II causes">WWII Causes</div>
+                    <div class="quick-question" data-question="How to learn a new language">Language Learning</div>
+                </div>
+            </div>
+            
+            <!-- Messages will be dynamically added here -->
+        </div>
+        
+        <!-- Input Area -->
+        <div class="input-container">
+            <textarea class="message-input" id="messageInput" placeholder="Ask REXB0T anything..." rows="1" autocomplete="off"></textarea>
+            <button class="send-btn" id="sendBtn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </main>
+    
+    <!-- Overlay for closing sidebar -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Sidebar for other methods -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Educational Tools</h2>
+            <p>Explore learning resources</p>
+        </div>
+        
+        <div class="sidebar-content">
+            <div class="sidebar-section">
+                <h3>Topics</h3>
+                <div class="sidebar-item" id="scienceBtn">
+                    <i class="fas fa-atom"></i>
+                    <span>Science Topics</span>
+                </div>
+                
+                <div class="sidebar-item" id="mathBtn">
+                    <i class="fas fa-calculator"></i>
+                    <span>Mathematics Help</span>
+                </div>
+                
+                <div class="sidebar-item" id="historyBtn">
+                    <i class="fas fa-landmark"></i>
+                    <span>History & Culture</span>
+                </div>
+                
+                <div class="sidebar-item" id="languageBtn">
+                    <i class="fas fa-language"></i>
+                    <span>Language Learning</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3>Quick Actions</h3>
+                <div class="sidebar-item" id="examplesBtn">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Example Questions</span>
+                </div>
+                
+                <div class="sidebar-item" id="clearChatBtn">
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Clear Chat</span>
+                </div>
+                
+                <div class="sidebar-item" id="saveChatBtn">
+                    <i class="fas fa-download"></i>
+                    <span>Save Conversation</span>
+                </div>
+            </div>
+            
+            <div class="educational-tips">
+                <h4><i class="fas fa-info-circle"></i> How to use REXB0T</h4>
+                <p>Ask questions about any educational topic. REXB0T can help explain concepts, solve problems, and provide learning resources.</p>
+            </div>
+        </div>
+    </aside>
+
+    <script>
+        // DOM Elements
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const themeToggle = document.getElementById('themeToggle');
+        const infoBtn = document.getElementById('infoBtn');
+        const messagesContainer = document.getElementById('messagesContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        
+        // Sidebar method buttons
+        const clearChatBtn = document.getElementById('clearChatBtn');
+        const saveChatBtn = document.getElementById('saveChatBtn');
+        const scienceBtn = document.getElementById('scienceBtn');
+        const mathBtn = document.getElementById('mathBtn');
+        const historyBtn = document.getElementById('historyBtn');
+        const languageBtn = document.getElementById('languageBtn');
+        const examplesBtn = document.getElementById('examplesBtn');
+        
+        // API Configuration
+        const API_KEY = 'AIzaSyBpqNW7M2JREsdeFbn6Ek3eVZk6QXB5SXE';
+        const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+        
+        // Initialize chat history
+        let chatHistory = [
+            {
+                role: "bot",
+                content: "Hello! I'm REXB0T, your AI educational assistant. I can help you with a wide range of educational topics including science, mathematics, history, language learning, and more. What would you like to learn about today?"
+            }
+        ];
+        
+        // Check for saved theme preference
+        let isDarkTheme = localStorage.getItem('theme') === 'dark';
+        
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight > 120 ? 120 : this.scrollHeight) + 'px';
+        });
+        
+        // Apply theme on page load
+        function applyTheme() {
+            if (isDarkTheme) {
+                document.body.classList.add('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.classList.remove('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+        
+        // Toggle theme
+        function toggleTheme() {
+            isDarkTheme = !isDarkTheme;
+            localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
+            applyTheme();
+        }
+        
+        // Initialize the chat with the welcome message
+        function initializeChat() {
+            displayMessage(chatHistory[0].content, "bot");
+        }
+        
+        // Display a message in the chat
+        function displayMessage(content, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            // User message
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        ${formatMessage(content)}
+                        <span class="message-time">${currentTime}</span>
+                        <div class="message-reactions">
+                            <button class="reaction-btn" onclick="addReaction(this, '👍')">👍</button>
+                            <button class="reaction-btn" onclick="addReaction(this, '👎')">👎</button>
+                            <button class="reaction-btn" onclick="addReaction(this, '😊')">😊</button>
+                        </div>
+                    </div>
+                `;
+            } 
+            // Bot message
+            else {
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        ${formatMessage(content)}
+                        <span class="message-time">${currentTime}</span>
+                        <div class="message-reactions">
+                            <button class="reaction-btn" onclick="addReaction(this, '👍')">👍</button>
+                            <button class="reaction-btn" onclick="addReaction(this, '👎')">👎</button>
+                            <button class="reaction-btn" onclick="addReaction(this, '❤️')">❤️</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // Add reaction to message
+        function addReaction(button, emoji) {
+            button.innerHTML = emoji;
+            button.style.backgroundColor = 'var(--primary-light)';
+            button.style.color = 'var(--primary-color)';
+            button.style.borderColor = 'var(--primary-color)';
+        }
+        
+        // Format message with line breaks
+        function formatMessage(text) {
+            // Convert markdown-like formatting
+            let formattedText = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/\n/g, '<br>')
+                .replace(/`(.*?)`/g, '<code>$1</code>');
+            
+            return formattedText;
+        }
+        
+        // Show typing indicator
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="typing-text">REXB0T is thinking<span class="thinking-dots"><span>.</span><span>.</span><span>.</span></span></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // Hide typing indicator
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        // Send message to API
+        async function sendMessageToAPI(message) {
+            try {
+                const response = await fetch(`${API_URL}?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [
+                            {
+                                parts: [
+                                    {
+                                        text: message
+                                    }
+                                ]
+                            }
+                        ]
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API Error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0].content.parts[0].text) {
+                    return data.candidates[0].content.parts[0].text;
+                } else {
+                    throw new Error('Invalid response format from API');
+                }
+            } catch (error) {
+                console.error('Error calling Gemini API:', error);
+                return `I apologize, but I'm having trouble accessing the educational resources right now. Please try again in a moment. Error: ${error.message}`;
+            }
+        }
+        
+        // Handle sending a message
+        async function handleSendMessage() {
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message to chat
+            displayMessage(message, 'user');
+            chatHistory.push({ role: "user", content: message });
+            
+            // Clear input and reset height
+            messageInput.value = '';
+            messageInput.style.height = '52px';
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Disable send button while waiting for response
+            sendBtn.disabled = true;
+            
+            try {
+                // Send to API and get response
+                const botResponse = await sendMessageToAPI(message);
+                
+                // Remove typing indicator
+                hideTypingIndicator();
+                
+                // Add bot response to chat
+                displayMessage(botResponse, 'bot');
+                chatHistory.push({ role: "bot", content: botResponse });
+            } catch (error) {
+                hideTypingIndicator();
+                displayMessage("I'm sorry, I encountered an error while processing your request. Please try again.", 'bot');
+                chatHistory.push({ role: "bot", content: "Error occurred" });
+            }
+            
+            // Re-enable send button
+            sendBtn.disabled = false;
+            messageInput.focus();
+        }
+        
+        // Add example questions from sidebar
+        function addExampleQuestion(question) {
+            messageInput.value = question;
+            messageInput.focus();
+            messageInput.dispatchEvent(new Event('input'));
+        }
+        
+        // Clear the chat
+        function clearChat() {
+            if (!confirm('Are you sure you want to clear the chat?')) return;
+            
+            // Clear the messages container except for the welcome message
+            messagesContainer.innerHTML = `
+                <div class="welcome-message">
+                    <h3>Welcome to REXB0T! 👋</h3>
+                    <p>I'm your AI educational assistant powered by Google's Gemini API.</p>
+                    <p>Ask me anything about science, math, history, language learning, or any other educational topic.</p>
+                    
+                    <div class="quick-questions">
+                        <div class="quick-question" data-question="Explain photosynthesis">Photosynthesis</div>
+                        <div class="quick-question" data-question="What is the Pythagorean theorem?">Pythagorean Theorem</div>
+                        <div class="quick-question" data-question="Explain World War II causes">WWII Causes</div>
+                        <div class="quick-question" data-question="How to learn a new language">Language Learning</div>
+                    </div>
+                </div>
+            `;
+            
+            // Reset chat history to initial state
+            chatHistory = [
+                {
+                    role: "bot",
+                    content: "Hello! I'm REXB0T, your AI educational assistant. I can help you with a wide range of educational topics including science, mathematics, history, language learning, and more. What would you like to learn about today?"
+                }
+            ];
+            
+            // Re-attach quick question event listeners
+            attachQuickQuestionListeners();
+            
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+        
+        // Save chat to localStorage
+        function saveChat() {
+            try {
+                const chatData = {
+                    history: chatHistory,
+                    timestamp: new Date().toISOString()
+                };
+                localStorage.setItem('rexbot_chat', JSON.stringify(chatData));
+                
+                // Show temporary notification
+                showNotification('Conversation saved successfully!');
+            } catch (error) {
+                showNotification('Failed to save conversation. Please try again.', 'error');
+            }
+            
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'error' ? 'var(--error-color)' : 'var(--success-color)'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: var(--shadow);
+                z-index: 2000;
+                font-weight: 500;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        
+        // Attach quick question event listeners
+        function attachQuickQuestionListeners() {
+            const quickQuestions = document.querySelectorAll('.quick-question');
+            quickQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const questionText = question.getAttribute('data-question');
+                    addExampleQuestion(questionText);
+                });
+            });
+        }
+        
+        // Event Listeners
+        hamburgerBtn.addEventListener('click', () => {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+        });
+        
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        themeToggle.addEventListener('click', toggleTheme);
+        
+        infoBtn.addEventListener('click', () => {
+            addExampleQuestion("What can you help me with?");
+        });
+        
+        // Send message on button click
+        sendBtn.addEventListener('click', handleSendMessage);
+        
+        // Send message on Enter key (but allow Shift+Enter for new line)
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+            }
+        });
+        
+        // Clear chat button
+        clearChatBtn.addEventListener('click', clearChat);
+        
+        // Save chat button
+        saveChatBtn.addEventListener('click', saveChat);
+        
+        // Sidebar educational topic buttons
+        scienceBtn.addEventListener('click', () => {
+            addExampleQuestion("Explain the process of photosynthesis in plants.");
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        mathBtn.addEventListener('click', () => {
+            addExampleQuestion("What is the Pythagorean theorem and how is it used?");
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        historyBtn.addEventListener('click', () => {
+            addExampleQuestion("What were the main causes of World War II?");
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        languageBtn.addEventListener('click', () => {
+            addExampleQuestion("What are some effective strategies for learning a new language?");
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        examplesBtn.addEventListener('click', () => {
+            // Add multiple example questions
+            const examples = [
+                "Explain the theory of relativity in simple terms.",
+                "How do I solve quadratic equations?",
+                "What was the impact of the Industrial Revolution?",
+                "What are the different parts of a cell and their functions?"
+            ];
+            
+            const randomExample = examples[Math.floor(Math.random() * examples.length)];
+            addExampleQuestion(randomExample);
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        // Apply saved theme on page load
+        applyTheme();
+        
+        // Load saved chat if exists
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeChat();
+            attachQuickQuestionListeners();
+            
+            // Check for saved chat
+            if (localStorage.getItem('rexbot_chat')) {
+                setTimeout(() => {
+                    if (confirm('Would you like to load your previous conversation?')) {
+                        loadChat();
+                    }
+                }, 500);
+            }
+        });
+        
+        // Load chat from localStorage
+        function loadChat() {
+            try {
+                const savedChat = localStorage.getItem('rexbot_chat');
+                if (savedChat) {
+                    const chatData = JSON.parse(savedChat);
+                    chatHistory = chatData.history;
+                    
+                    // Clear and reload chat UI
+                    messagesContainer.innerHTML = '';
+                    
+                    // Display all messages from history
+                    for (let i = 0; i < chatHistory.length; i++) {
+                        const message = chatHistory[i];
+                        displayMessage(message.content, message.role);
+                    }
+                    
+                    showNotification('Previous conversation loaded successfully!');
+                }
+            } catch (error) {
+                showNotification('Failed to load conversation. Please try again.', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
