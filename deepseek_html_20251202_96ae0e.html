@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduChat AI - Educational Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Hamburger Menu Button (Mobile) -->
+        <div class="hamburger-menu" id="hamburgerMenu">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <!-- Mobile Sidebar Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <header>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>EduChat AI</h1>
+            </div>
+            <p class="subtitle">Your Personal Educational Assistant</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Sidebar (Now with better separation) -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3><i class="fas fa-bars"></i> Menu</h3>
+                    <button class="close-sidebar" id="closeSidebar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <!-- User Profile Section -->
+                <div class="sidebar-section user-profile">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h4>Student User</h4>
+                            <span class="profile-status">Online</span>
+                        </div>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <i class="fas fa-comment"></i>
+                            <span>Chats: <strong>24</strong></span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-book"></i>
+                            <span>Topics: <strong>12</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Bot Info Section -->
+                <div class="sidebar-section bot-info">
+                    <div class="bot-header">
+                        <div class="bot-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="bot-info-text">
+                            <h4>EduBot AI</h4>
+                            <span class="bot-status">Ready to Teach</span>
+                        </div>
+                    </div>
+                    <div class="bot-details">
+                        <p><i class="fas fa-brain"></i> Powered by Gemini 2.0 Flash</p>
+                        <p><i class="fas fa-graduation-cap"></i> Specialized in Educational Content</p>
+                        <p><i class="fas fa-language"></i> Multiple Learning Levels</p>
+                    </div>
+                </div>
+
+                <!-- Quick Prompts Section -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-bolt"></i> Quick Prompts</h3>
+                    <div class="prompt-buttons">
+                        <button class="prompt-btn" data-prompt="Explain photosynthesis in simple terms">
+                            <i class="fas fa-leaf"></i> Photosynthesis
+                        </button>
+                        <button class="prompt-btn" data-prompt="What is the Pythagorean theorem and how is it used?">
+                            <i class="fas fa-square-root-alt"></i> Math Theorem
+                        </button>
+                        <button class="prompt-btn" data-prompt="Explain the causes of World War II">
+                            <i class="fas fa-globe-europe"></i> World War II
+                        </button>
+                        <button class="prompt-btn" data-prompt="How does the water cycle work?">
+                            <i class="fas fa-tint"></i> Water Cycle
+                        </button>
+                        <button class="prompt-btn" data-prompt="What are Newton's three laws of motion?">
+                            <i class="fas fa-atom"></i> Physics Laws
+                        </button>
+                        <button class="prompt-btn" data-prompt="Explain the structure of an atom">
+                            <i class="fas fa-atom"></i> Atomic Structure
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Learning Modes Section -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-sliders-h"></i> Learning Mode</h3>
+                    <div class="mode-selector">
+                        <select id="learningMode">
+                            <option value="beginner">👶 Beginner Level</option>
+                            <option value="intermediate" selected>🎓 Intermediate Level</option>
+                            <option value="advanced">🧠 Advanced Level</option>
+                            <option value="exam_prep">📚 Exam Preparation</option>
+                            <option value="simplified">🔍 Simplified Explanation</option>
+                        </select>
+                    </div>
+                    <div class="mode-description">
+                        <p id="modeDesc">Balanced explanation with technical details</p>
+                    </div>
+                </div>
+
+                <!-- Subject Categories -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-book-open"></i> Subjects</h3>
+                    <div class="subject-categories">
+                        <span class="subject-tag">Science</span>
+                        <span class="subject-tag">Mathematics</span>
+                        <span class="subject-tag">History</span>
+                        <span class="subject-tag">Geography</span>
+                        <span class="subject-tag">Literature</span>
+                        <span class="subject-tag">Technology</span>
+                        <span class="subject-tag">Art</span>
+                        <span class="subject-tag">Languages</span>
+                    </div>
+                </div>
+
+                <!-- Recent Chats -->
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-history"></i> Recent Topics</h3>
+                    <div class="recent-chats">
+                        <div class="recent-chat">
+                            <i class="fas fa-comment"></i>
+                            <span>Photosynthesis explained</span>
+                        </div>
+                        <div class="recent-chat">
+                            <i class="fas fa-comment"></i>
+                            <span>Math equations help</span>
+                        </div>
+                        <div class="recent-chat">
+                            <i class="fas fa-comment"></i>
+                            <span>History timeline</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Chat Container -->
+            <div class="chat-container">
+                <!-- Chat Header with User/Bot Indicators -->
+                <div class="chat-header">
+                    <div class="chat-title">
+                        <h2><i class="fas fa-comments"></i> Educational Chat</h2>
+                        <div class="chat-indicators">
+                            <span class="indicator user-indicator">
+                                <i class="fas fa-user"></i> You
+                            </span>
+                            <span class="indicator bot-indicator">
+                                <i class="fas fa-robot"></i> EduBot
+                            </span>
+                        </div>
+                    </div>
+                    <div class="chat-controls">
+                        <button id="toggleTheme" class="theme-btn" title="Toggle theme">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <button id="clearChat" class="clear-btn">
+                            <i class="fas fa-trash-alt"></i> Clear
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Chat Messages Area -->
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Welcome Message from Bot -->
+                    <div class="message-container bot-message-container">
+                        <div class="message-avatar">
+                            <div class="avatar bot-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                        </div>
+                        <div class="message-content-wrapper">
+                            <div class="message-header">
+                                <span class="sender-name">EduBot AI</span>
+                                <span class="message-time">Just now</span>
+                            </div>
+                            <div class="message-bubble bot-bubble">
+                                <p>Hello! 👋 I'm your educational AI assistant. I can help explain complex concepts, answer your questions, and guide your learning journey. What topic would you like to explore today?</p>
+                                <div class="message-actions">
+                                    <button class="action-btn"><i class="fas fa-copy"></i></button>
+                                    <button class="action-btn"><i class="fas fa-thumbs-up"></i></button>
+                                </div>
+                            </div>
+                            <div class="message-footer">
+                                <span class="message-status"><i class="fas fa-check-double"></i> Delivered</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample User Message -->
+                    <div class="message-container user-message-container">
+                        <div class="message-content-wrapper user-wrapper">
+                            <div class="message-header user-header">
+                                <span class="sender-name">You</span>
+                                <span class="message-time">2 mins ago</span>
+                            </div>
+                            <div class="message-bubble user-bubble">
+                                <p>Can you explain how AI works in simple terms?</p>
+                                <div class="message-actions">
+                                    <button class="action-btn"><i class="fas fa-copy"></i></button>
+                                    <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-avatar user-avatar">
+                            <div class="avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sample Bot Response -->
+                    <div class="message-container bot-message-container">
+                        <div class="message-avatar">
+                            <div class="avatar bot-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                        </div>
+                        <div class="message-content-wrapper">
+                            <div class="message-header">
+                                <span class="sender-name">EduBot AI</span>
+                                <span class="message-time">1 min ago</span>
+                            </div>
+                            <div class="message-bubble bot-bubble">
+                                <p>AI works by analyzing large amounts of data to find patterns, then using those patterns to make predictions or decisions. Think of it like how you learn from experience - the more examples an AI sees, the better it gets at recognizing patterns!</p>
+                                <div class="message-footer">
+                                    <span class="ai-tag"><i class="fas fa-brain"></i> AI Generated</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-area">
+                    <div class="input-header">
+                        <span class="current-mode">
+                            <i class="fas fa-sliders-h"></i>
+                            <span id="currentModeText">Intermediate Mode</span>
+                        </span>
+                        <span class="char-count" id="charCount">0/500</span>
+                    </div>
+                    <div class="input-container">
+                        <textarea 
+                            id="userInput" 
+                            placeholder="Ask any educational question... (e.g., 'Explain quantum physics basics' or 'How do cells divide?')"
+                            rows="3"
+                            maxlength="500"></textarea>
+                        <div class="input-controls">
+                            <button id="attachButton" class="icon-btn" title="Attach file">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <button id="voiceButton" class="icon-btn voice-btn" title="Voice input">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button id="sendButton" class="send-btn">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-footer">
+                        <div class="input-hints">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Try asking about science, math, history, or any subject!</span>
+                        </div>
+                        <div class="input-shortcuts">
+                            <kbd>Enter</kbd> to send • <kbd>Shift + Enter</kbd> for new line
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <p>EduChat AI - For Educational Purposes Only | Powered by Gemini AI</p>
+                <p class="disclaimer">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    AI responses may contain errors. Always verify important information with trusted sources.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
